@@ -20,7 +20,7 @@ public class NoteAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView title;
-        TextView description;
+        TextView priority;
         TextView date;
     }
 
@@ -55,8 +55,8 @@ public class NoteAdapter extends BaseAdapter {
             mainView = inflater.inflate(R.layout.row, null);
             ViewHolder vh = new ViewHolder();
             vh.title = (TextView) mainView.findViewById(R.id.note_title);
-            vh.description = (TextView) mainView.findViewById(R.id.note_description);
-            vh.date = (TextView) mainView.findViewById(R.id.note_date);
+            vh.priority = (TextView) mainView.findViewById(R.id.note_priority);
+            vh.date = (TextView) mainView.findViewById(R.id.note_dueDate);
 
             //associate the view holder with the view
             mainView.setTag(vh);
@@ -71,7 +71,7 @@ public class NoteAdapter extends BaseAdapter {
         ViewHolder vh = (ViewHolder) mainView.getTag();
 
         //set the note title on the textview
-        vh.description.setText(note.description);
+        vh.priority.setText(note.priority+"");
         vh.title.setText(note.title);
         vh.date.setText(note.date);
 

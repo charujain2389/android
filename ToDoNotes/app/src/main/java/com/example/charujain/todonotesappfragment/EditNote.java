@@ -35,10 +35,16 @@ public class EditNote extends AppCompatActivity {
         noteList = launchingIntent.getParcelableArrayListExtra("NOTES");
         currentPosition = launchingIntent.getIntExtra("POSITION", 0);
         System.out.print("priority==");
-        System.out.println(noteList.get(currentPosition).priority);
-        title.setText(noteList.get(currentPosition).title);
-        description.setText(noteList.get(currentPosition).description);
-        priority.setText("" + noteList.get(currentPosition).priority);
+        Note note = noteList.get(currentPosition);
+        System.out.println(note.priority);
+        title.setText(note.title);
+        description.setText(note.description);
+        priority.setText("" + note.priority);
+
+        int month = Integer.parseInt(note.date.split("-")[0]) - 1;
+        int day = Integer.parseInt(note.date.split("-")[1]);
+        int year = Integer.parseInt(note.date.split("-")[2]);
+        datePicker.updateDate(year, month, day);
 
     }
 
@@ -50,7 +56,7 @@ public class EditNote extends AppCompatActivity {
                 // Month is 0 based, so you have to add 1
                 .append(month + 1).append("-")
                 .append(day).append("-")
-                .append(year).append(" ").toString();
+                .append(year).toString();
         String query = "DELETE FROM notes WHERE title=" + "\"" + noteList.get(currentPosition).title + "\"";
         sqlHandler.executeQuery(query);
         query = "INSERT INTO notes(title, description, date, priority, is_deleted) values ('"
@@ -67,7 +73,7 @@ public class EditNote extends AppCompatActivity {
                 // Month is 0 based, so you have to add 1
                 .append(month + 1).append("-")
                 .append(day).append("-")
-                .append(year).append(" ");
+                .append(year);
 
         String query = "UPDATE notes set title = " + "\"" + title.getText().toString() + "\"" + ", description = " + "\"" + description.getText().toString() + "\"" + ", priority = "
                 + Integer.parseInt(priority.getText().toString()) + ", date = " + "\"" + date.toString() + "\""

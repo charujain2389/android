@@ -56,7 +56,7 @@ public class AddNoteFragment extends Fragment {
                 StringBuilder date = new StringBuilder()
                         .append(month + 1).append("-")
                         .append(day).append("-")
-                        .append(year).append(" ");
+                        .append(year);
                 Note note = new Note();
                 note.title = title;
                 note.description = description;

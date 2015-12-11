@@ -8,25 +8,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/note_title"
-        android:layout_margin="20dp"/>
-
-    <TextView
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/note_description"
-        android:layout_gravity="center_vertical" />
+        android:text="New Text"
+        android:id="@+id/note_dueDate"
+        android:layout_gravity="center_vertical"
+        android:padding="@dimen/activity_horizontal_margin"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/note_date"
+        android:text="New Text"
+        android:id="@+id/note_title"
         android:layout_gravity="center_vertical"
-        android:layout_weight="0.36" />
+        android:padding="@dimen/activity_horizontal_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/note_priority"
+        android:layout_gravity="center_vertical" />
+
 </LinearLayout>
