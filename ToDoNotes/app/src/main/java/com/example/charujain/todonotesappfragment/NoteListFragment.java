@@ -37,7 +37,7 @@ public class NoteListFragment extends Fragment implements AddNoteDelegate {
 
     private void addNoteToDB(Note c) {
         String query = "INSERT INTO notes(title, description, date, priority) values ('"
-                + c.title + "','" + c.description + "','"+ c.date + "'," + c.priority + ")";
+                + reformatString(c.title) + "','" + reformatString(c.description) + "','"+ c.date + "'," + c.priority + ")";
         sqlHandler.executeQuery(query);
     }
 
@@ -116,5 +116,13 @@ public class NoteListFragment extends Fragment implements AddNoteDelegate {
             mainActivity.switchToRecycledFragment();
         }
         return true;
+    }
+
+    private String reformatString(String input) {
+        System.out.println(input);
+        String output = input.replaceAll("'","''");
+        output = output.replaceAll("\"","\\\"");
+        System.out.println(output);
+        return output;
     }
 }

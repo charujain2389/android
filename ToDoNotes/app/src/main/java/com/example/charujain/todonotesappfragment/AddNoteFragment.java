@@ -23,6 +23,7 @@ public class AddNoteFragment extends Fragment {
     EditText noteTitleEditText;
     EditText noteDescriptionEditText;
     DatePicker datePicker;
+    EditText priorityEditText;
     int year;
     int month;
     int day;
@@ -44,6 +45,7 @@ public class AddNoteFragment extends Fragment {
         addButton = (Button) fragmentView.findViewById(R.id.button2);
         cancelButton = (Button) fragmentView.findViewById(R.id.button3);
         datePicker = (DatePicker) fragmentView.findViewById(R.id.datePicker);
+        priorityEditText = (EditText) fragmentView.findViewById(R.id.editText3);
         addButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -61,6 +63,8 @@ public class AddNoteFragment extends Fragment {
                 note.title = title;
                 note.description = description;
                 note.date = date.toString();
+                String priority = priorityEditText.getText().toString();
+                note.priority = priority != null ? Integer.parseInt(priority) : 0;
                 if (addNoteDelegate != null) {
                     addNoteDelegate.addNote(note);
                 }

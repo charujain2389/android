@@ -1,13 +1,12 @@
 package com.example.charujain.todonotesappfragment;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -57,12 +56,31 @@ public class EditNote extends AppCompatActivity {
                 .append(month + 1).append("-")
                 .append(day).append("-")
                 .append(year).toString();
+        int is_deleted = getIsDeleted();
         String query = "DELETE FROM notes WHERE title=" + "\"" + noteList.get(currentPosition).title + "\"";
         sqlHandler.executeQuery(query);
-        query = "INSERT INTO notes(title, description, date, priority, is_deleted) values ('"
-                + title.getText().toString() + "','" + description.getText().toString() + "','"+ date + "'," + Integer.parseInt(priority.getText().toString()) + ", 1)";
-        sqlHandler.executeQuery(query);
+        // deleting first time, else delete permanently
+        if (is_deleted == 0) {
+            query = "INSERT INTO notes(title, description, date, priority, is_deleted) values ('"
+                    + reformatString(title.getText().toString()) + "','" + reformatString(description.getText().toString()) + "','" + date + "'," + Integer.parseInt(priority.getText().toString()) + ", 1)";
+            sqlHandler.executeQuery(query);
+        }
         finish();
+    }
+
+    private int getIsDeleted() {
+            String query = "SELECT is_deleted FROM notes where title=" + "\"" + noteList.get(currentPosition).title + "\"";
+            Cursor c1 = sqlHandler.selectQuery(query);
+            int is_deleted = 0;
+            if (c1 != null && c1.getCount() != 0) {
+                if (c1.moveToFirst()) {
+                    do {
+                        is_deleted = c1.getInt(c1.getColumnIndex("is_deleted"));
+                    } while (c1.moveToNext());
+                }
+                c1.close();
+            }
+        return is_deleted;
     }
 
     public void updateNote(View view) {
@@ -75,11 +93,19 @@ public class EditNote extends AppCompatActivity {
                 .append(day).append("-")
                 .append(year);
 
-        String query = "UPDATE notes set title = " + "\"" + title.getText().toString() + "\"" + ", description = " + "\"" + description.getText().toString() + "\"" + ", priority = "
-                + Integer.parseInt(priority.getText().toString()) + ", date = " + "\"" + date.toString() + "\""
-                +"where title=" + "\"" + noteList.get(currentPosition).title + "\"";
+        String titleString = reformatString(title.getText().toString());
+        String descriptionString = reformatString(description.getText().toString());
+        String query = "UPDATE notes set title = " + "\"" + titleString + "\"" + ", description = " + "\"" + descriptionString + "\"" + ", priority = "
+                + Integer.parseInt(priority.getText().toString()) + ", date = " + "\"" + date.toString() + "\"" + ", is_deleted=0 "
+                +"where title=" + "\"" + reformatString(noteList.get(currentPosition).title) + "\"";
         sqlHandler.executeQuery(query);
         finish();
+    }
+
+    private String reformatString(String input) {
+        String output = input.replaceAll("'","''");
+        output = output.replaceAll("\"","\\\"");
+        return output;
     }
 
     public void cancel(View view) {

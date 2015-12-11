@@ -1,5 +1,6 @@
 package com.example.charujain.todonotesappfragment;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -36,6 +38,16 @@ public class RecycledNotesFragment extends Fragment {
         showList();
         adapter = new NoteAdapter(getContext(), noteList);
         noteListView.setAdapter(adapter);
+        noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), EditNote.class);
+                intent.putExtra("NOTES", noteList);
+                intent.putExtra("POSITION", position);
+                startActivity(intent);
+                adapter.notifyDataSetChanged();
+            }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +60,16 @@ public class RecycledNotesFragment extends Fragment {
         return fragmentView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    private void updateUI() {
+        adapter.notifyDataSetChanged();
+        showList();
+    }
 
     private void showList() {
         noteList.clear();
